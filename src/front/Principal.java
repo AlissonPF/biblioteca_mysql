@@ -16,7 +16,7 @@ public class Principal {
                     new AppCliente();
                     break;
                 case 2:
-                    // new AppLivro();
+                    new AppLivro();
                     break;
                 case 3:
                     // new AppEmprestimo();
