@@ -3,7 +3,9 @@ package persistencia;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import entities.Livro;
 
@@ -97,6 +99,34 @@ public class LivroPersistencia {
   }
 
   // ---------------------------------------------------------------------------------------------------------------------------
+  public List<Livro> listarLivrosEmprestados() {
+    List<Livro> livrosEmprestados = new ArrayList<>();
+
+    try {
+      conn = new Conexao().conectaBD();
+      String sql = "SELECT livro.* FROM emprestimo JOIN livro ON emprestimo.livro_id = livro.id";
+
+      PreparedStatement pstm = conn.prepareStatement(sql);
+      ResultSet rs = pstm.executeQuery();
+
+      while (rs.next()) {
+        Livro livro = new Livro();
+        livro.setId(rs.getInt("id"));
+        livro.setTitulo(rs.getString("titulo"));
+        livro.setAutor(rs.getString("autor"));
+        livrosEmprestados.add(livro);
+      }
+
+      rs.close();
+      pstm.close();
+    } catch (SQLException e) {
+      System.out.println("EmprestimoPersistencia: " + e.getMessage());
+    }
+
+    return livrosEmprestados;
+  }
+  // ---------------------------------------------------------------------------------------------------------------------------
+
   public ArrayList<Livro> listarLivros() {
     conn = new Conexao().conectaBD();
     String sql = "select * from livro";
