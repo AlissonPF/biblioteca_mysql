@@ -65,6 +65,36 @@ public class EmprestimoPersistencia {
     }
 
   }
+  // --------------------------------------------------------------------------------------------------------------------------
+
+  public Emprestimo buscarEmprestimoRetornoEmprestimo(Emprestimo objEmprestimo) {
+    conn = new Conexao().conectaBD();
+    String sql = "SELECT * FROM emprestimo WHERE id = ?";
+
+    try {
+        pstm = conn.prepareStatement(sql);
+        pstm.setInt(1, objEmprestimo.getId());
+        rs = pstm.executeQuery();
+
+        if (rs.next()) {
+            ClientePersistencia objClientePersistencia = new ClientePersistencia();
+            Emprestimo emprestimoEncontrado = new Emprestimo();
+            LivroPersistencia objLivroPersistencia = new LivroPersistencia();
+            emprestimoEncontrado.setId(rs.getInt("id"));
+            emprestimoEncontrado.setCliente(objClientePersistencia.buscarClientePorId(rs.getInt("cliente_id")));
+            emprestimoEncontrado.setLivro(objLivroPersistencia.buscarLivroPorId(rs.getInt("livro_id")));
+            emprestimoEncontrado.setDataEmpréstimo(rs.getDate("data_emprestimo"));
+            emprestimoEncontrado.setDataDevolução(rs.getDate("data_devolucao"));
+            return emprestimoEncontrado;
+        } else {
+            return null; // Empréstimo não encontrado
+        }
+    } catch (Exception erro) {
+        System.out.println("EmprestimoPersistencia: " + erro.getMessage());
+        return null;
+    }
+}
+
 
   // --------------------------------------------------------------------------------------------------------------------------
   public ResultSet buscarEmprestimoPorCliente(Emprestimo objEmprestimo) {

@@ -60,7 +60,7 @@ public class AppEmprestimo {
     LivroPersistencia objLivroPersistencia = new LivroPersistencia();
 
     objCliente.setCpf(Console.readString("Informe o cpf: "));
-    objCliente = (Cliente) objClientePersistencia.verificarCliente(objCliente);
+    objCliente =objClientePersistencia.buscarCliente(objCliente);
 
     objEmprestimo.setCliente(objCliente);
 
@@ -71,7 +71,7 @@ public class AppEmprestimo {
         System.out.println("\n\nCliente com empréstimo ainda ativo!");
       } else {
         objLivro.setTitulo(Console.readString("Informe o título: "));
-        objLivro = (Livro) objLivroPersistencia.buscarLivro(objLivro);
+        objLivro = objLivroPersistencia.buscarLivro(objLivro);
         objEmprestimo.setLivro(objLivro);
         System.out.println("Emprestimo cadastrado com sucesso!");
         objEmprestimoPersistencia.cadastrarEmprestimo(objEmprestimo);
@@ -94,7 +94,7 @@ public class AppEmprestimo {
       ResultSet rsEmprestimo = objEmprestimoPersistencia.buscarEmprestimo(objEmprestimo);
 
       if (rsEmprestimo.next()) {
-        objEmprestimo = (Emprestimo) objEmprestimoPersistencia.buscarEmprestimo(objEmprestimo);
+        objEmprestimo = objEmprestimoPersistencia.buscarEmprestimoRetornoEmprestimo(objEmprestimo);
         System.out.println("\n\nCliente: " + objEmprestimo.getCliente().getNome());
         System.out.println("Livro: " + objEmprestimo.getLivro().getTitulo());
         System.out.println("Empréstimo: " + objEmprestimo.getDataEmpréstimo());

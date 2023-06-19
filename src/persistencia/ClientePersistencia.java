@@ -56,7 +56,7 @@ public class ClientePersistencia {
   }
 
   // ---------------------------------------------------------------------------------------------------------------------------
-  public ResultSet buscarCliente(Cliente objCliente) {
+  public Cliente buscarCliente(Cliente objCliente) {
     conn = new Conexao().conectaBD();
     String sql = "select * from cliente where cpf = ?";
 
@@ -64,9 +64,17 @@ public class ClientePersistencia {
 
       pstm = conn.prepareStatement(sql);
       pstm.setString(1, objCliente.getCpf());
-
       rs = pstm.executeQuery();
-      return rs;
+
+      if (rs.next()) {
+        Cliente clienteEncontrado = new Cliente();
+        clienteEncontrado.setId(rs.getInt("id"));
+        clienteEncontrado.setNome(rs.getString("nome"));
+        clienteEncontrado.setCpf(rs.getString("cpf"));
+        return clienteEncontrado;
+      } else {
+          return null; // Cliente não encontrado
+        }
     } catch (Exception erro) {
       System.out.println("ClientePersistencia: " + erro.getMessage());
       return null;
