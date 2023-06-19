@@ -64,7 +64,6 @@ public class AppCliente {
         objClientePersistencia.cadastrarCliente(objCliente);
       }
     } catch (SQLException e) {
-      // Trate a exceção de acordo com suas necessidades
       e.printStackTrace();
     }
 
@@ -88,7 +87,6 @@ public class AppCliente {
         System.out.println("Cliente não encontrado!");
       }
     } catch (SQLException e) {
-      // Trate a exceção de acordo com suas necessidades
       e.printStackTrace();
     }
 
@@ -127,7 +125,6 @@ public class AppCliente {
         System.out.println("\n\nCliente não encontrado!\n\n");
       }
     } catch (SQLException e) {
-      // Trate a exceção de acordo com suas necessidades
       e.printStackTrace();
     }
 
@@ -151,7 +148,6 @@ public class AppCliente {
         System.out.println("\n\nCliente não encontrado!\n\n");
       }
     } catch (SQLException e) {
-      // Trate a exceção de acordo com suas necessidades
       e.printStackTrace();
     }
   }

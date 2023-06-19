@@ -36,7 +36,7 @@ public class AppEmprestimo {
           atualizarEmprestimo();
           break;
         case 5:
-          // deletarCliente();
+          deletarEmprestimo();
           break;
         case 6:
           break;
@@ -60,25 +60,34 @@ public class AppEmprestimo {
     LivroPersistencia objLivroPersistencia = new LivroPersistencia();
 
     objCliente.setCpf(Console.readString("Informe o cpf: "));
-    objCliente =objClientePersistencia.buscarCliente(objCliente);
+    objCliente = objClientePersistencia.buscarCliente(objCliente);
 
-    objEmprestimo.setCliente(objCliente);
+    if (objCliente == null) {
+      System.out.println("\n\nCliente não encontrado!");
+    } else {
+      objEmprestimo.setCliente(objCliente);
 
-    try {
-      ResultSet rsEmprestimo = objEmprestimoPersistencia.buscarEmprestimoPorCliente(objEmprestimo);
+      try {
+        ResultSet rsEmprestimo = objEmprestimoPersistencia.buscarEmprestimoPorCliente(objEmprestimo);
 
-      if (rsEmprestimo.next()) {
-        System.out.println("\n\nCliente com empréstimo ainda ativo!");
-      } else {
-        objLivro.setTitulo(Console.readString("Informe o título: "));
-        objLivro = objLivroPersistencia.buscarLivro(objLivro);
-        objEmprestimo.setLivro(objLivro);
-        System.out.println("Emprestimo cadastrado com sucesso!");
-        objEmprestimoPersistencia.cadastrarEmprestimo(objEmprestimo);
+        if (rsEmprestimo.next()) {
+          System.out.println("\n\nCliente com empréstimo ainda ativo!");
+        } else {
+          objLivro.setTitulo(Console.readString("Informe o título: "));
+          objLivro = objLivroPersistencia.buscarLivro(objLivro);
+          if (objLivro == null) {
+            System.out.println("\n\nLivro não encontrado!");
+          } else {
+            objEmprestimo.setLivro(objLivro);
+            System.out.println("Emprestimo cadastrado com sucesso!");
+            objEmprestimoPersistencia.cadastrarEmprestimo(objEmprestimo);
+
+          }
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
       }
-    } catch (SQLException e) {
-      // Trate a exceção de acordo com suas necessidades
-      e.printStackTrace();
+
     }
 
   }
@@ -104,7 +113,6 @@ public class AppEmprestimo {
         System.out.println("Emprestimo não encontrado!");
       }
     } catch (SQLException e) {
-      // Trate a exceção de acordo com suas necessidades
       e.printStackTrace();
     }
 
@@ -123,6 +131,7 @@ public class AppEmprestimo {
       System.out.println("Devolução: " + itemEmprestimo.getDataDevolução());
     }
   }
+
   // ----------------------------------------------------------------------------------------------------------------------------
   public void atualizarEmprestimo() {
     System.out.println("\n\n*****Renovar empréstimo*****");
@@ -142,9 +151,31 @@ public class AppEmprestimo {
         System.out.println("\n\nEmprestimo não encontrado!\n\n");
       }
     } catch (SQLException e) {
-      // Trate a exceção de acordo com suas necessidades
       e.printStackTrace();
     }
 
   }
+  // ----------------------------------------------------------------------------------------------------------------------------
+
+  private static void deletarEmprestimo() {
+    System.out.println("\n\n*****Deletar/Devolver Empréstimo*****");
+    Emprestimo objEmprestimo = new Emprestimo();
+    EmprestimoPersistencia objEmprestimoPersistencia = new EmprestimoPersistencia();
+
+    objEmprestimo.setId(Console.readInt("Informe o id do empréstimo: "));
+
+    try {
+      ResultSet rsEmprestimo = objEmprestimoPersistencia.buscarEmprestimo(objEmprestimo);
+
+      if (rsEmprestimo.next()) {
+        System.out.println("\n\nEmprestimo deletado com sucesso!\n\n");
+        objEmprestimoPersistencia.deletarEmprestimo(objEmprestimo);
+      } else {
+        System.out.println("\n\nEmprestimo não encontrado!\n\n");
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+  // ----------------------------------------------------------------------------------------------------------------------------
 }

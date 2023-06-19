@@ -56,20 +56,20 @@ public class LivroPersistencia {
 
   // ---------------------------------------------------------------------------------------------------------------------------
   // public ResultSet buscarLivro(Livro objLivro) {
-  //   conn = new Conexao().conectaBD();
-  //   String sql = "select * from livro where titulo = ?";
+  // conn = new Conexao().conectaBD();
+  // String sql = "select * from livro where titulo = ?";
 
-  //   try {
+  // try {
 
-  //     pstm = conn.prepareStatement(sql);
-  //     pstm.setString(1, objLivro.getAutor());
+  // pstm = conn.prepareStatement(sql);
+  // pstm.setString(1, objLivro.getAutor());
 
-  //     rs = pstm.executeQuery();
-  //     return rs;
-  //   } catch (Exception erro) {
-  //     System.out.println("LivroPersistencia: " + erro.getMessage());
-  //     return null;
-  //   }
+  // rs = pstm.executeQuery();
+  // return rs;
+  // } catch (Exception erro) {
+  // System.out.println("LivroPersistencia: " + erro.getMessage());
+  // return null;
+  // }
 
   // }
   public Livro buscarLivro(Livro objLivro) {
@@ -77,25 +77,24 @@ public class LivroPersistencia {
     String sql = "SELECT * FROM livro WHERE titulo = ?";
 
     try {
-        pstm = conn.prepareStatement(sql);
-        pstm.setString(1, objLivro.getTitulo());
-        rs = pstm.executeQuery();
+      pstm = conn.prepareStatement(sql);
+      pstm.setString(1, objLivro.getTitulo());
+      rs = pstm.executeQuery();
 
-        if (rs.next()) {
-            Livro livroEncontrado = new Livro();
-            livroEncontrado.setId(rs.getInt("id"));
-            livroEncontrado.setTitulo(rs.getString("titulo"));
-            livroEncontrado.setAutor(rs.getString("autor"));
-            return livroEncontrado;
-        } else {
-            return null; // Livro não encontrado
-        }
+      if (rs.next()) {
+        Livro livroEncontrado = new Livro();
+        livroEncontrado.setId(rs.getInt("id"));
+        livroEncontrado.setTitulo(rs.getString("titulo"));
+        livroEncontrado.setAutor(rs.getString("autor"));
+        return livroEncontrado;
+      } else {
+        return null; // Livro não encontrado
+      }
     } catch (Exception erro) {
-        System.out.println("LivroPersistencia: " + erro.getMessage());
-        return null;
+      System.out.println("LivroPersistencia: " + erro.getMessage());
+      return null;
     }
-}
-
+  }
 
   // ---------------------------------------------------------------------------------------------------------------------------
   public ArrayList<Livro> listarLivros() {

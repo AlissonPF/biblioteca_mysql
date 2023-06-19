@@ -63,7 +63,6 @@ public class AppLivro {
         objLivroPersistencia.cadastrarLivro(objLivro);
       }
     } catch (SQLException e) {
-      // Trate a exceção de acordo com suas necessidades
       e.printStackTrace();
     }
 
@@ -86,7 +85,6 @@ public class AppLivro {
         System.out.println("Livro não encontrado!");
       }
     } catch (SQLException e) {
-      // Trate a exceção de acordo com suas necessidades
       e.printStackTrace();
     }
 
@@ -123,7 +121,6 @@ public class AppLivro {
         System.out.println("\n\nLivro não encontrado!\n\n");
       }
     } catch (SQLException e) {
-      // Trate a exceção de acordo com suas necessidades
       e.printStackTrace();
     }
 
@@ -147,7 +144,6 @@ public class AppLivro {
         System.out.println("\n\nLivro não encontrado!\n\n");
       }
     } catch (SQLException e) {
-      // Trate a exceção de acordo com suas necessidades
       e.printStackTrace();
     }
   }
