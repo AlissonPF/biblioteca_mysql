@@ -141,4 +141,30 @@ public class ClientePersistencia {
       System.out.println("ClientePersistencia: " + erro.getMessage());
     }
   }
+
+  // ---------------------------------------------------------------------------------------------------------------------------
+  public Cliente buscarClientePorId(int id) {
+    conn = new Conexao().conectaBD();
+    String sql = "select * from cliente where id = ?";
+
+    try {
+      pstm = conn.prepareStatement(sql);
+      pstm.setInt(1, id);
+
+      rs = pstm.executeQuery();
+
+      if (rs.next()) {
+        Cliente objCliente = new Cliente();
+        objCliente.setId(rs.getInt("id"));
+        objCliente.setNome(rs.getString("nome"));
+        objCliente.setCpf(rs.getString("cpf"));
+        objCliente.setIdade(rs.getInt("idade"));
+        return objCliente;
+      }
+    } catch (Exception erro) {
+      System.out.println("ClientePersistencia: " + erro.getMessage());
+    }
+
+    return null;
+  }
 }

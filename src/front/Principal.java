@@ -19,7 +19,7 @@ public class Principal {
                     new AppLivro();
                     break;
                 case 3:
-                    // new AppEmprestimo();
+                    new AppEmprestimo();
                     break;
                 case 4:
                     break;

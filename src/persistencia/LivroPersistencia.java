@@ -139,4 +139,29 @@ public class LivroPersistencia {
       System.out.println("LivroPersistencia: " + erro.getMessage());
     }
   }
+
+  // ---------------------------------------------------------------------------------------------------------------------------
+  public Livro buscarLivroPorId(int id) {
+    conn = new Conexao().conectaBD();
+    String sql = "select * from livro where id = ?";
+
+    try {
+      pstm = conn.prepareStatement(sql);
+      pstm.setInt(1, id);
+
+      rs = pstm.executeQuery();
+
+      if (rs.next()) {
+        Livro objLivro = new Livro();
+        objLivro.setId(rs.getInt("id"));
+        objLivro.setTitulo(rs.getString("titulo"));
+        objLivro.setAutor(rs.getString("autor"));
+        return objLivro;
+      }
+    } catch (Exception erro) {
+      System.out.println("LivroPersistencia: " + erro.getMessage());
+    }
+
+    return null;
+  }
 }
