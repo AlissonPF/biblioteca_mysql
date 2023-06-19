@@ -77,14 +77,19 @@ public class EmprestimoPersistencia {
         rs = pstm.executeQuery();
 
         if (rs.next()) {
+            Date sqlDateEmprestimo = rs.getDate("data_emprestimo");
+            Date sqlDateDevolucao = rs.getDate("data_devolucao");
+
+            // Date dataEmprestimoSql = Date.valueOf(data1);
+            // Date dataDevolucaoSql = Date.valueOf(data2);
             ClientePersistencia objClientePersistencia = new ClientePersistencia();
             Emprestimo emprestimoEncontrado = new Emprestimo();
             LivroPersistencia objLivroPersistencia = new LivroPersistencia();
             emprestimoEncontrado.setId(rs.getInt("id"));
             emprestimoEncontrado.setCliente(objClientePersistencia.buscarClientePorId(rs.getInt("cliente_id")));
             emprestimoEncontrado.setLivro(objLivroPersistencia.buscarLivroPorId(rs.getInt("livro_id")));
-            emprestimoEncontrado.setDataEmpréstimo(rs.getDate("data_emprestimo"));
-            emprestimoEncontrado.setDataDevolução(rs.getDate("data_devolucao"));
+            emprestimoEncontrado.setDataEmpréstimo(sqlDateEmprestimo.toLocalDate());
+            emprestimoEncontrado.setDataDevolução(sqlDateDevolucao.toLocalDate());
             return emprestimoEncontrado;
         } else {
             return null; // Empréstimo não encontrado
@@ -129,6 +134,9 @@ public class EmprestimoPersistencia {
         Cliente objCliente = new Cliente();
         Livro objLivro = new Livro();
 
+        Date sqlDateEmprestimo = rs.getDate("data_emprestimo");
+        Date sqlDateDevolucao = rs.getDate("data_devolucao");
+
         LivroPersistencia objLivroPersistencia = new LivroPersistencia();
         ClientePersistencia objClientePersistencia = new ClientePersistencia();
 
@@ -138,8 +146,8 @@ public class EmprestimoPersistencia {
         objEmprestimo.setId(rs.getInt("id"));
         objEmprestimo.setCliente(objClientePersistencia.buscarClientePorId(objCliente.getId()));
         objEmprestimo.setLivro(objLivroPersistencia.buscarLivroPorId(objLivro.getId()));
-        objEmprestimo.setDataEmpréstimo(rs.getDate("data_emprestimo"));
-        objEmprestimo.setDataDevolução(rs.getDate("data_devolucao"));
+        objEmprestimo.setDataEmpréstimo(sqlDateEmprestimo.toLocalDate());
+        objEmprestimo.setDataDevolução(sqlDateDevolucao.toLocalDate());
 
         lista.add(objEmprestimo);
       }
@@ -151,15 +159,20 @@ public class EmprestimoPersistencia {
   }
   // ---------------------------------------------------------------------------------------------------------------------------
 
-  public void alterarEmprestimo(Emprestimo objEmprestimo) {
+  public void renovarEmprestimo(Emprestimo objEmprestimo) {
     String sql = "update emprestimo set data_devolucao = ? where id = ?";
 
     conn = new Conexao().conectaBD();
 
+    LocalDate data1 = objEmprestimo.getDataDevolução();
+    LocalDate data2 = data1.plusDays(14);
+
+    Date dataDevolucaoSql = Date.valueOf(data2);
+
     try {
       pstm = conn.prepareStatement(sql);
 
-      pstm.setDate(1, objEmprestimo.getDataDevolução());
+      pstm.setDate(1, dataDevolucaoSql);
       pstm.setInt(2, objEmprestimo.getId());
 
       pstm.execute();

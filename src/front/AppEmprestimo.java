@@ -18,7 +18,7 @@ public class AppEmprestimo {
       System.out.println("1- Cadastrar");
       System.out.println("2- Buscar");
       System.out.println("3- Listar");
-      System.out.println("4- Atualizar/Renovar");
+      System.out.println("4- Renovar");
       System.out.println("5- Deletar");
       System.out.println("6- Voltar");
       opc = Console.readInt("Informe a opção: ");
@@ -33,7 +33,7 @@ public class AppEmprestimo {
           listarEmprestimos();
           break;
         case 4:
-          // atualizarCliente();
+          atualizarEmprestimo();
           break;
         case 5:
           // deletarCliente();
@@ -122,5 +122,29 @@ public class AppEmprestimo {
       System.out.println("Empréstimo: " + itemEmprestimo.getDataEmpréstimo());
       System.out.println("Devolução: " + itemEmprestimo.getDataDevolução());
     }
+  }
+  // ----------------------------------------------------------------------------------------------------------------------------
+  public void atualizarEmprestimo() {
+    System.out.println("\n\n*****Renovar empréstimo*****");
+    Emprestimo objEmprestimo = new Emprestimo();
+    EmprestimoPersistencia objEmprestimoPersistencia = new EmprestimoPersistencia();
+
+    objEmprestimo.setId(Console.readInt("Informe o id do empréstimo: "));
+
+    try {
+      ResultSet rsEmprestimo = objEmprestimoPersistencia.buscarEmprestimo(objEmprestimo);
+
+      if (rsEmprestimo.next()) {
+        objEmprestimo = objEmprestimoPersistencia.buscarEmprestimoRetornoEmprestimo(objEmprestimo);
+        System.out.println("\n\nEmprestimo atualizado com sucesso!\n\n");
+        objEmprestimoPersistencia.renovarEmprestimo(objEmprestimo);
+      } else {
+        System.out.println("\n\nEmprestimo não encontrado!\n\n");
+      }
+    } catch (SQLException e) {
+      // Trate a exceção de acordo com suas necessidades
+      e.printStackTrace();
+    }
+
   }
 }

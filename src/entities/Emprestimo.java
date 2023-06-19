@@ -1,13 +1,13 @@
 package entities;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class Emprestimo {
   private int id;
   private Livro livro;
   private Cliente cliente;
-  private Date dataEmpréstimo;
-  private Date dataDevolução;
+  private LocalDate dataEmpréstimo;
+  private LocalDate dataDevolução;
 
   public int getId() {
     return id;
@@ -33,19 +33,19 @@ public class Emprestimo {
     this.cliente = cliente;
   }
 
-  public Date getDataEmpréstimo() {
+  public LocalDate getDataEmpréstimo() {
     return dataEmpréstimo;
   }
 
-  public void setDataEmpréstimo(Date dataEmpréstimo) {
+  public void setDataEmpréstimo(LocalDate dataEmpréstimo) {
     this.dataEmpréstimo = dataEmpréstimo;
   }
 
-  public Date getDataDevolução() {
+  public LocalDate getDataDevolução() {
     return dataDevolução;
   }
 
-  public void setDataDevolução(Date dataDevolução) {
+  public void setDataDevolução(LocalDate dataDevolução) {
     this.dataDevolução = dataDevolução;
   }
 }
