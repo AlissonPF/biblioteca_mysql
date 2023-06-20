@@ -2,8 +2,10 @@ package front;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import entities.Cliente;
+import entities.Emprestimo;
 import persistencia.ClientePersistencia;
 
 public class AppCliente {
@@ -117,10 +119,17 @@ public class AppCliente {
       ResultSet rsCliente = objClientePersistencia.verificarCliente(objCliente);
 
       if (rsCliente.next()) {
-        objCliente.setNome(Console.readString("Informe o nome: "));
-        objCliente.setIdade(Console.readInt("Informe a idade: "));
-        System.out.println("\n\nCliente atualizado com sucesso!\n\n");
-        objClientePersistencia.alterarCliente(objCliente);
+        objCliente = objClientePersistencia.buscarCliente(objCliente);
+        List<Emprestimo> emprestimosCliente = objClientePersistencia.listarEmprestimosCliente(objCliente);
+
+        if (!emprestimosCliente.isEmpty()) {
+          System.out.println("\n\nCliente ainda com empréstimo ativo!\n\n");
+        } else {
+          objCliente.setNome(Console.readString("Informe o nome: "));
+          objCliente.setIdade(Console.readInt("Informe a idade: "));
+          System.out.println("\n\nCliente atualizado com sucesso!\n\n");
+          objClientePersistencia.alterarCliente(objCliente);
+        }
       } else {
         System.out.println("\n\nCliente não encontrado!\n\n");
       }
@@ -129,8 +138,8 @@ public class AppCliente {
     }
 
   }
-  // ----------------------------------------------------------------------------------------------------------------------------
 
+  // ----------------------------------------------------------------------------------------------------------------------------
   private static void deletarCliente() {
     System.out.println("\n\n*****Deletar cliente*****");
     Cliente objCliente = new Cliente();
@@ -142,8 +151,15 @@ public class AppCliente {
       ResultSet rsCliente = objClientePersistencia.verificarCliente(objCliente);
 
       if (rsCliente.next()) {
-        System.out.println("\n\nCliente deletado com sucesso!\n\n");
-        objClientePersistencia.deletarCliente(objCliente);
+        objCliente = objClientePersistencia.buscarCliente(objCliente);
+        List<Emprestimo> emprestimosCliente = objClientePersistencia.listarEmprestimosCliente(objCliente);
+
+        if (!emprestimosCliente.isEmpty()) {
+          System.out.println("\n\nCliente ainda com empréstimo ativo!\n\n");
+        } else {
+          System.out.println("\n\nCliente deletado com sucesso!\n\n");
+          objClientePersistencia.deletarCliente(objCliente);
+        }
       } else {
         System.out.println("\n\nCliente não encontrado!\n\n");
       }
@@ -151,6 +167,42 @@ public class AppCliente {
       e.printStackTrace();
     }
   }
+  // ----------------------------------------------------------------------------------------------------------------------------
+
+  // private static void deletarCliente() {
+  // System.out.println("\n\n*****Deletar cliente*****");
+  // Cliente objCliente = new Cliente();
+  // ClientePersistencia objClientePersistencia = new ClientePersistencia();
+
+  // objCliente.setCpf(Console.readString("Informe o cpf: "));
+
+  // try {
+  // ResultSet rsCliente = objClientePersistencia.verificarCliente(objCliente);
+
+  // if (rsCliente.next()) {
+  // objCliente = objClientePersistencia.buscarCliente(objCliente);
+  // List<Cliente> ClientesEmprestados =
+  // objClientePersistencia.listarClientesEmprestados();
+  // boolean ClienteEmprestado = false;
+  // for (Cliente itemCliente : ClientesEmprestados) {
+  // if (objCliente.getCpf().equals(itemCliente.getCpf())) {
+  // ClienteEmprestado = true;
+  // break;
+  // }
+  // }
+  // if (ClienteEmprestado) {
+  // System.out.println("\n\nCliente ainda com empréstimo ativo!\n\n");
+  // } else {
+  // System.out.println("\n\nCliente deletado com sucesso!\n\n");
+  // objClientePersistencia.deletarCliente(objCliente);
+  // }
+  // } else {
+  // System.out.println("\n\nCliente não encontrado!\n\n");
+  // }
+  // } catch (SQLException e) {
+  // e.printStackTrace();
+  // }
+  // }
   // ----------------------------------------------------------------------------------------------------------------------------
 
 }
