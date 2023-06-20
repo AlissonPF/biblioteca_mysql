@@ -6,6 +6,7 @@ import java.util.List;
 
 import entities.Cliente;
 import entities.Emprestimo;
+import negocio.ValidaCPF;
 import persistencia.ClientePersistencia;
 
 public class AppCliente {
@@ -53,20 +54,23 @@ public class AppCliente {
     ClientePersistencia objClientePersistencia = new ClientePersistencia();
 
     objCliente.setCpf(Console.readString("Informe o cpf: "));
-
-    try {
-      ResultSet rsCliente = objClientePersistencia.verificarCliente(objCliente);
-
-      if (rsCliente.next()) {
-        System.out.println("\n\nCliente já cadastrado!");
-      } else {
-        objCliente.setNome(Console.readString("Informe o nome: "));
-        objCliente.setIdade(Console.readInt("Informe a idade: "));
-        System.out.println("Cliente cadastrado com sucesso!");
-        objClientePersistencia.cadastrarCliente(objCliente);
+    if(ValidaCPF.isCPF(objCliente.getCpf())){
+      try {
+        ResultSet rsCliente = objClientePersistencia.verificarCliente(objCliente);
+  
+        if (rsCliente.next()) {
+          System.out.println("\n\nCliente já cadastrado!");
+        } else {
+          objCliente.setNome(Console.readString("Informe o nome: "));
+          objCliente.setIdade(Console.readInt("Informe a idade: "));
+          System.out.println("Cliente cadastrado com sucesso!");
+          objClientePersistencia.cadastrarCliente(objCliente);
+        }
+      } catch (SQLException e) {
+        e.printStackTrace();
       }
-    } catch (SQLException e) {
-      e.printStackTrace();
+    }else{
+      System.out.println("CPF inválido!");
     }
 
   }
